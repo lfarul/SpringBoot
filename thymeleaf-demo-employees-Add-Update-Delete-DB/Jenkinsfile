@@ -5,14 +5,14 @@ pipeline {
     stage("Compile") {
       steps {
         echo "Compiling the file..."
-        sh 'javac TempMethod2.java'       
+        sh 'mvn compile'       
   }
 }
     // Przeprowadzam testy jednostkowe
     stage("JUnit Test") {
       steps {
         echo "Testing the file..."
-        sh 'javac -cp junit-4.12.jar TempMethod2Test.java'
+        sh 'mvn test'
       }
     }
     // Buduje obraz Dockera dla Docker Registery 
@@ -20,14 +20,14 @@ pipeline {
       steps{
         echo "Building Docker image for Docker Registery..."
         // lfarul to mój username na dockerhub i musi być w nazwie image / nazwa obrazu : wersja obrazu
-        sh 'docker build -t lfarul/tm2:3.0 .'
+        sh 'docker build -t lfarul/springboot:1.0 .'
       }
     }
       // Buduje obraz Dockera dla Google Cloud
     stage("Build Docker image for Google Cloud"){
       steps{
         echo "Building Docker image for Docker Repository..."
-        sh 'docker build -t gcr.io/nowyprojekt-235718/tm2:3.0 .'
+        sh 'docker build -t gcr.io/nowyprojekt-235718/springboot:1.0 .'
       }
     }  
     // Robie push obrazu Dockera na chmure Dockera
@@ -37,7 +37,7 @@ pipeline {
         withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubpwd')]) {
           sh "docker login -u lfarul -p ${dockerHubpwd}"
         }
-        sh 'docker push lfarul/tm2:3.0'
+        sh 'docker push lfarul/springboot:1.0'
       }
     }
     // Robie push obrazu Dockera na chmure Google
