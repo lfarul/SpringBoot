@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<title>Employee Directory</title> <!-- Ta nazwa pojawi sie w przeglądarce -->
+</head>
+<body>
+	<div class = "container">
+	<!-- h3 - this is the header of the form -->
+	<h3>Employee Directory</h3>
+	<hr>
+	
+	<!-- Add a button, @symbol is a reference path to my application.Button, button-primary,button-small, margin bottom-3pixels -->
+	<a th:href="@{/employees/showFormForAdd}" class="btn btn-primary btn-sm mb-3">
+		Add Employee
+	
+	</a>
+	
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+				<th>Fist Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+				<th>Action</th>	
+			</tr>
+		
+		</thead>
+		<!-- Building the table dynamically based on the list of employees  -->
+		<tbody>
+			<tr th:each="tempEmployee : ${employees}">
+				<td th:text="${tempEmployee.firstName}"/>
+				<td th:text="${tempEmployee.lastName}"/>
+				<td th:text="${tempEmployee.email}"/>
+				
+				<td>
+				
+				<!-- Add an Update button/link -->
+				<a th:href="@{/employees/showFormForUpdate(employeeId=${tempEmployee.id})}" class="btn btn-warning btn-sm">
+					Update
+				</a>
+				
+				<!-- Add a Delete button/link -->
+				<a th:href="@{/employees/delete(employeeId=${tempEmployee.id})}" class="btn btn-danger btn-sm"
+					onclick="if(!(confirm('Are you sure you want to delete this employee?')))return false">
+					Delete
+				</a>
+
+				</td>				
+			</tr>
+		
+		</tbody>
+	
+	</table>
+</div>
+</body>
+</html>
